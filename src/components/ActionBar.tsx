@@ -1,5 +1,5 @@
 // src/components/ActionBar.tsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,26 +7,35 @@ import {
   InputAdornment,
   IconButton,
   Typography,
-  Select,
   MenuItem,
+  Select,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddIcon from "@mui/icons-material/Add";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { AddPatientModal } from "../modals/AddPatientModal";
+import { CreateAppointmentModal } from "../modals/CreateAppointmentModal";
 
 export const ActionBar = () => {
+  const [clinic, setClinic] = React.useState("all");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+
   return (
     <Box
       sx={{
         bgcolor: "#f8f9ff",
         borderBottom: "1px solid #e0e0ff",
-        py: 6,
-        px: { xs: 3, sm: 5, md: 8, lg: 10 },
+        pt: 6,
+        px: 3,
+        pb: 0,
       }}
     >
-      {/* ─────── Centered Search Bar ─────── */}
       <Box sx={{ maxWidth: 800, mx: "auto", mb: 5 }}>
         <OutlinedInput
           fullWidth
@@ -71,12 +80,8 @@ export const ActionBar = () => {
         />
       </Box>
 
-      {/* ─────── Buttons Row – Aligned with Header (Logo & Avatar) ─────── */}
       <Box
         sx={{
-          maxWidth: "1400px",
-          mx: "auto",
-          px: { xs: 3, sm: 5, md: 8, lg: 10 },
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -88,67 +93,75 @@ export const ActionBar = () => {
           endIcon={
             <Box
               sx={{
-                width: 28,
-                height: 28,
+                width: 20,
+                height: 20,
                 borderRadius: "50%",
-                bgcolor: "#0b0c7d",
+                bgcolor: "white",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                ml: 1.5,
               }}
             >
-              <AddIcon sx={{ fontSize: 18, color: "white" }} />
+              <AddIcon sx={{ fontSize: 14, color: "#0b0c7d" }} />
             </Box>
           }
+          onClick={() => setModalOpen(true)}
           sx={{
-            height: 52,
-            px: 4,
+            height: 48,
+            px: 3,
             borderRadius: 3,
-            bgcolor: "#4a5bff",
+            bgcolor: "#0b0c7d",
             color: "white",
+            fontFamily: "Satoshi, sans-serif",
             fontWeight: 600,
             fontSize: "15px",
             textTransform: "none",
-            boxShadow: "0 4px 16px rgba(74, 91, 255, 0.3)",
+            minWidth: 200,
+            boxShadow: "none",
             "&:hover": {
-              bgcolor: "#3b4cff",
+              bgcolor: "#090a5c",
+              boxShadow: "none",
             },
           }}
         >
           Add new patient
         </Button>
 
+        <AddPatientModal open={modalOpen} onClose={() => setModalOpen(false)} />
+
         <Button
           variant="contained"
           endIcon={
             <Box
               sx={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                bgcolor: "#0b0c7d",
+                width: 20,
+                height: 20,
+                borderRadius: "4px",
+                bgcolor: "white",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                ml: 1.5,
               }}
             >
-              <AddIcon sx={{ fontSize: 18, color: "white" }} />
+              <AddIcon sx={{ fontSize: 14, color: "#0b0c7d" }} />
             </Box>
           }
+          onClick={() => setCreateOpen(true)}
           sx={{
-            height: 52,
-            px: 4,
+            height: 48,
+            px: 3,
             borderRadius: 3,
-            bgcolor: "#4a5bff",
+            bgcolor: "#0b0c7d",
             color: "white",
+            fontFamily: "Satoshi, sans-serif",
             fontWeight: 600,
             fontSize: "15px",
             textTransform: "none",
-            boxShadow: "0 4px 16px rgba(74, 91, 255, 0.3)",
+            minWidth: 220,
+            boxShadow: "none",
             "&:hover": {
-              bgcolor: "#3b4cff",
+              bgcolor: "#090a5c",
+              boxShadow: "none",
             },
           }}
         >
@@ -156,73 +169,132 @@ export const ActionBar = () => {
         </Button>
       </Box>
 
-      {/* ─────── Bottom Section: Appointments Title + Filters + Pagination ─────── */}
+      <CreateAppointmentModal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+      />
+
       <Box
         sx={{
-          maxWidth: "1400px",
-          mx: "auto",
-          px: { xs: 3, sm: 5, md: 8, lg: 10 },
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        {/* Left: Title + Dropdowns */}
+        {/* LEFT SIDE - Appointments, Dropdown, Sort */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           <Typography
             sx={{
               fontFamily: "Satoshi, sans-serif",
-              fontSize: "20px",
               fontWeight: 700,
-              color: "#1f2937",
+              fontSize: "18px",
+              color: "#051438",
             }}
           >
             Appointments
           </Typography>
 
           <Select
-            defaultValue="all"
-            size="small"
+            value={clinic}
+            onChange={(e) => setClinic(e.target.value)}
             IconComponent={KeyboardArrowDownIcon}
             sx={{
-              minWidth: 140,
-              fontSize: "14px",
-              fontWeight: 500,
-              color: "#4a5bff",
-              "& .MuiSelect-icon": { color: "#4a5bff" },
+              height: 36,
+              minWidth: 130,
+              fontFamily: "Satoshi, sans-serif",
+              fontSize: "16px",
+              fontWeight: 700,
+              color: "#051438",
+              bgcolor: "transparent",
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+              "& .MuiSelect-icon": {
+                color: "#051438",
+              },
             }}
           >
             <MenuItem value="all">All clinics</MenuItem>
+            <MenuItem value="dental">Accident and Emergency</MenuItem>
+            <MenuItem value="general">Neurology</MenuItem>
+            <MenuItem value="general">Cardiology</MenuItem>
+            <MenuItem value="general">Gastroenterology</MenuItem>
+            <MenuItem value="general">Renal</MenuItem>
           </Select>
 
-          <Select
-            defaultValue="sort"
-            size="small"
-            startAdornment={
-              <KeyboardArrowDownIcon sx={{ mr: 1, color: "#4a5bff" }} />
-            }
+          <Button
+            startIcon={<SwapVertIcon sx={{ fontSize: 18, color: "#0b0c7d" }} />}
             sx={{
-              minWidth: 120,
-              fontSize: "14px",
-              fontWeight: 500,
-              color: "#4a5bff",
+              height: 36,
+              px: 2,
+              fontFamily: "Satoshi, sans-serif",
+              fontSize: "16px",
+              fontWeight: 700,
+              color: "#051438",
+              textTransform: "none",
+              bgcolor: "transparent",
+              "&:hover": {
+                bgcolor: "rgba(0, 0, 0, 0.04)",
+              },
             }}
           >
-            <MenuItem value="sort">Sort by</MenuItem>
-          </Select>
+            Sort by
+          </Button>
         </Box>
 
-        {/* Right: Pagination Info */}
-        <Typography
-          sx={{
-            fontFamily: "Satoshi, sans-serif",
-            fontSize: "14px",
-            fontWeight: 500,
-            color: "#6b7280",
-          }}
-        >
-          1 – 20 of 197
-        </Typography>
+        {/* RIGHT SIDE - Pagination */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Typography
+            sx={{
+              fontFamily: "Satoshi, sans-serif",
+              fontSize: "16px",
+              fontWeight: 500,
+              color: "#677597",
+            }}
+          >
+            1 – 20 <span style={{ fontWeight: 500, color: "#051438" }}>of</span>{" "}
+            197
+          </Typography>
+
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <IconButton
+              size="small"
+              sx={{
+                width: 32,
+                height: 32,
+                border: "1px solid #e5e7eb",
+                borderRadius: 1,
+                "&:hover": {
+                  bgcolor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <ChevronLeftIcon sx={{ fontSize: 18, color: "#051438" }} />
+            </IconButton>
+
+            <IconButton
+              size="small"
+              sx={{
+                width: 32,
+                height: 32,
+                bgcolor: "white",
+                border: "1px solid #e5e7eb",
+                borderRadius: 1,
+                "&:hover": {
+                  bgcolor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <ChevronRightIcon sx={{ fontSize: 18, color: "#051438" }} />
+            </IconButton>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
