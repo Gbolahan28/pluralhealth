@@ -18,6 +18,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -38,21 +39,20 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "92vw", 
-          height: "90vh", 
-          maxWidth: "1600px", 
-          maxHeight: "95vh", 
+          width: "92vw",
+          height: "90vh",
+          maxWidth: "1600px",
+          maxHeight: "95vh",
 
           overflowY: "auto",
           bgcolor: "#EDF0F8",
-          borderRadius: "20px", 
+          borderRadius: "20px",
           boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
           p: 5,
           display: "flex",
           flexDirection: "column",
         }}
       >
-
         <Box
           sx={{
             display: "flex",
@@ -74,7 +74,6 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
           </IconButton>
         </Box>
 
-
         <Box
           sx={{
             display: "flex",
@@ -85,7 +84,6 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
             mb: 3,
           }}
         >
-
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
               <Avatar
@@ -101,7 +99,11 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
               <Box sx={{ display: "flex", gap: 2 }}>
                 <Button
                   variant="contained"
-                  endIcon={<span style={{ marginLeft: 8 }}>▼</span>}
+                  endIcon={
+                    <span style={{ marginLeft: 8 }}>
+                      <ExpandMoreIcon sx={{ verticalAlign: "middle" }} />
+                    </span>
+                  }
                   sx={{
                     bgcolor: "#0b0c7d",
                     color: "white",
@@ -132,7 +134,6 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
               </Box>
             </Box>
 
-            
             <Typography
               variant="caption"
               color="#7a90c2"
@@ -149,7 +150,6 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
             </Typography>
           </Box>
 
-        
           <Box
             sx={{
               display: "flex",
@@ -158,7 +158,6 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
               alignItems: "flex-end",
             }}
           >
-        
             <Tooltip
               title="If there is an existing Patient ID, input the patient's existing ID into the field"
               arrow
@@ -176,17 +175,23 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
                   alignItems: "center",
                   gap: 1,
                   whiteSpace: "nowrap",
-                  height: 24, 
+                  height: 24,
                   boxSizing: "border-box",
                 }}
               >
-                <InfoOutlinedIcon sx={{ fontSize: 16, color: "#fff", bgcolor: "#ff8b00", borderRadius: '50%' }} />
+                <InfoOutlinedIcon
+                  sx={{
+                    fontSize: 16,
+                    color: "#fff",
+                    bgcolor: "#ff8b00",
+                    borderRadius: "50%",
+                  }}
+                />
                 If there is an existing Patient ID, input the patient's existing
                 ID into the field
               </Box>
             </Tooltip>
 
-            
             <TextField
               label="Patient ID"
               value="HOSP98765433"
@@ -210,7 +215,6 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
           </Box>
         </Box>
 
-        
         <Box
           sx={{
             display: "grid",
@@ -297,10 +301,8 @@ export const AddPatientModal = ({ open, onClose }: AddPatientModalProps) => {
           </Box>
         </Box>
 
-        
         <Box sx={{ flexGrow: 1, minHeight: "200px" }} />
 
-        
         <Box
           sx={{
             display: "flex",

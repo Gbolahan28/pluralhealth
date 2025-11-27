@@ -28,8 +28,7 @@ export const ActionBar = () => {
   return (
     <Box
       sx={{
-        bgcolor: "#f8f9ff",
-        borderBottom: "1px solid #e0e0ff",
+        bgcolor: "#EDF0F8",
         pt: 6,
         px: 3,
         pb: 0,

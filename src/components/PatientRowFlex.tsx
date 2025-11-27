@@ -2,19 +2,57 @@ import React from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Avatar } from "@mui/material";
+import AdmittedIcon from "../assets/icons/AdmittedIcon.svg";
+import AwaitingVitalsIcon from "../assets/icons/AwaitingVitalsIcon.svg";
+import NotArrivedIcon from "../assets/icons/NotArrivedIcon.svg";
+import ProcessingIcon from "../assets/icons/ProcessingIcon.svg";
+import SeenIcon from "../assets/icons/SeenIcon.svg";
+import AwaitingDoctorIcon from "../assets/icons/AwaitingVitalsIcon.svg";
+import TransferredIcon from "../assets/icons/AdmittedIcon.svg";
 
 export const PatientRowFlex = ({ apt, index }: any) => {
   const statusConfig: any = {
-    Processing: { bg: "#FFF3E0", color: "#FF8F00", dot: "#FFB300" },
-    "Not arrived": { bg: "#FFEBEE", color: "#E53935", dot: "#EF5350" },
-    "Awaiting vitals": { bg: "#E8F5E9", color: "#43A047", dot: "#66BB6A" },
-    "Awaiting doctor": { bg: "#E3F2FD", color: "#1976D2", dot: "#42A5F5" },
+    Processing: {
+      bg: "#FFF6DB",
+      color: "#FF8F00",
+      Icon: ProcessingIcon,
+    },
+    "Not arrived": {
+      bg: "#FFDBDB",
+      color: "#E53935",
+      Icon: NotArrivedIcon,
+    },
+    "Awaiting vitals": {
+      bg: "#E9CCFF",
+      color: "#A22CFF",
+      Icon: AwaitingVitalsIcon,
+    },
+    "Awaiting doctor": {
+      bg: "#D0D1FB",
+      color: "#0B0C7D",
+      Icon: AwaitingDoctorIcon,
+    },
+    "Admitted to ward": {
+      bg: "#FFEFDB",
+      color: "#FF8B00",
+      Icon: AdmittedIcon,
+    },
+    "Transferred to A&E": {
+      bg: "#EFDBFF",
+      color: "#A22CFF",
+      Icon: TransferredIcon,
+    },
+    "Seen doctor": {
+      bg: "#E2F8EB",
+      color: "#27AE60",
+      Icon: SeenIcon,
+    },
   };
 
   const config = statusConfig[apt.status] || {
     bg: "#F5F5F5",
     color: "#666",
-    dot: "#999",
+    Icon: ProcessingIcon,
   };
 
   return (
@@ -26,7 +64,6 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         position: "relative",
       }}
     >
-
       <div
         style={{
           position: "absolute",
@@ -39,10 +76,9 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         }}
       ></div>
 
-
       <div
         style={{
-          width: 60,
+          flex: "0 0 60px",
           paddingLeft: 24,
           display: "flex",
           alignItems: "center",
@@ -55,9 +91,13 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         </span>
       </div>
 
-
       <div
-        style={{ width: 310, display: "flex", alignItems: "center", gap: 20 }}
+        style={{
+          flex: "310 0 310px",
+          display: "flex",
+          alignItems: "center",
+          gap: 20,
+        }}
       >
         <Avatar
           src={apt.avatar}
@@ -71,9 +111,9 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         <div>
           <div
             style={{
-              fontSize: "15px",
+              fontSize: "16px",
               fontWeight: 600,
-              color: "#1F2937",
+              color: "#051438",
               marginBottom: 2,
             }}
           >
@@ -81,9 +121,9 @@ export const PatientRowFlex = ({ apt, index }: any) => {
           </div>
           <div
             style={{
-              fontSize: "13px",
-              color: "#6B7280",
-              fontWeight: 500,
+              fontSize: "12px",
+              color: "#677597",
+              fontWeight: 700,
             }}
           >
             {apt.hospital_id} • {apt.gender} • {apt.age}
@@ -91,10 +131,9 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         </div>
       </div>
 
-
       <div
         style={{
-          width: 240,
+          flex: "240 0 240px",
           display: "flex",
           alignItems: "center",
           gap: 10,
@@ -115,7 +154,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
           </div>
         )}
 
-        <span style={{ fontSize: 14, fontWeight: 500, color: "#1F2937" }}>
+        <span style={{ fontSize: 16, fontWeight: 600, color: "#051438" }}>
           {apt.clinic}
         </span>
 
@@ -136,13 +175,12 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         )}
       </div>
 
-
       <div
         style={{
-          width: 130,
-          fontSize: 14,
+          flex: "0 0 130px",
+          fontSize: 16,
           fontWeight: 600,
-          color: "#1F2937",
+          color: "#051438",
           display: "flex",
           alignItems: "center",
         }}
@@ -150,53 +188,35 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         {apt.wallet}
       </div>
 
-  
-      <div style={{ width: 160 }}>
+      <div style={{ flex: "0 0 160px" }}>
         <div
           style={{
             fontSize: 14,
             fontWeight: 600,
-            color: "#FB923C", 
+            color: config.color,
           }}
         >
           {apt.time}
         </div>
-
         <div
           style={{
             fontSize: 13,
-            color: "#6B7280",
+            color: config.color,
             fontWeight: 500,
           }}
         >
           {apt.date}
         </div>
-
-        {apt.tag && (
-          <div
-            style={{
-              marginTop: 4,
-              background: "#6366F1",
-              color: "white",
-              fontSize: 10,
-              fontWeight: 600,
-              padding: "3px 8px",
-              borderRadius: 6,
-              display: "inline-block",
-            }}
-          >
-            {apt.tag}
-          </div>
-        )}
       </div>
 
 
       <div
         style={{
-          width: 160,
+          flex: "0 0 160px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          gap: 8,
         }}
       >
         <div
@@ -207,35 +227,46 @@ export const PatientRowFlex = ({ apt, index }: any) => {
             padding: "8px 14px",
             borderRadius: 8,
             background: config.bg,
-            minWidth: 120,
-            justifyContent: "center",
           }}
         >
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: config.dot,
-            }}
-          ></div>
-
           <span
             style={{
-              fontSize: 13,
+              fontSize: 16,
               fontWeight: 600,
               color: config.color,
             }}
           >
             {apt.status}
           </span>
+          <div
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: "50%",
+              background: config.color,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+
+            <img
+              src={config.Icon}
+              alt={apt.status}
+              style={{
+                width: 12,
+                height: 12,
+                objectFit: "contain",
+              }}
+            />
+          </div>
         </div>
       </div>
 
-
       <div
         style={{
-          width: 60,
+          flex: "0 0 60px",
           display: "flex",
           justifyContent: "flex-end",
           paddingRight: 24,

@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { Header } from "./components/Header";
 import { ActionBar } from "./components/ActionBar";
 import { PaginationControls } from "./components/PaginationControl";
-import {  AppointmentsTableFlex } from "./components/AppointmentsTableFlex";
+import { AppointmentsTableFlex } from "./components/AppointmentsTableFlex";
 
 
 function App() {
@@ -12,8 +12,11 @@ function App() {
       sx={{
         minHeight: "100vh",
         bgcolor: "#f9fafb",
-        width: "100%",
-        overflow: "hidden",
+        width: "100vw",
+        overflowX: "hidden",
+        overflowY: "auto",
+        p: 0,
+        m: 0,
       }}
     >
       <Header />
