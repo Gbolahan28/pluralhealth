@@ -1,4 +1,3 @@
-// src/components/ActionBar.tsx
 import React, { useState } from "react";
 import {
   Box,
@@ -181,7 +180,6 @@ export const ActionBar = () => {
           alignItems: "center",
         }}
       >
-        {/* LEFT SIDE - Appointments, Dropdown, Sort */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           <Typography
             sx={{
@@ -248,7 +246,6 @@ export const ActionBar = () => {
           </Button>
         </Box>
 
-        {/* RIGHT SIDE - Pagination */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Typography
             sx={{

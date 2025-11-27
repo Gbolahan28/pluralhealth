@@ -1,22 +1,21 @@
-// src/components/modals/CreateAppointmentModal.tsx
-import React from "react";
+
+import React, { useState } from "react";
 import {
   Box,
   Modal,
   Typography,
   IconButton,
   TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   InputAdornment,
   Button,
-  Grid, // ← THIS IS THE FIX (MUI v5.15+ uses Grid2)
+  Grid,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -26,10 +25,32 @@ interface CreateAppointmentModalProps {
   onClose: () => void;
 }
 
+const patients = [
+  { name: "Aikpopoidon Endurance", id: "PLAT-S/009089" },
+  { name: "Aikpopoidon Feranmi", id: "PLAT-S/0124789" },
+  { name: "Aikpopoidon Selena", id: "PLAT-S/0035689" },
+  { name: "Aikpopoidon Tolani", id: "PLAT-S/215636" },
+];
+
 export const CreateAppointmentModal = ({
   open,
   onClose,
 }: CreateAppointmentModalProps) => {
+  const [searchValue, setSearchValue] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<string | null>(null);
+
+  const filteredPatients = patients.filter(
+    (patient) =>
+      patient.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      patient.id.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  const handlePatientSelect = (patient: (typeof patients)[0]) => {
+    setSelectedPatient(patient.name);
+    setSearchValue(patient.name);
+    setShowDropdown(false);
+  };
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -41,13 +62,13 @@ export const CreateAppointmentModal = ({
           width: { xs: "95vw", sm: "90vw", md: 780 },
           maxHeight: "90vh",
           overflowY: "auto",
-          bgcolor: "white",
+          bgcolor: "#EDF0F8",
           borderRadius: 5,
           boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
           p: { xs: 3, sm: 5 },
         }}
       >
-        {/* Header */}
+
         <Box
           sx={{
             display: "flex",
@@ -56,7 +77,7 @@ export const CreateAppointmentModal = ({
             mb: 3,
           }}
         >
-          <Typography variant="h5" fontWeight={700} color="#1F2937">
+          <Typography variant="h5" fontWeight={700} color="#051438">
             Add new appointment
           </Typography>
           <IconButton onClick={onClose}>
@@ -64,138 +85,221 @@ export const CreateAppointmentModal = ({
           </IconButton>
         </Box>
 
-        {/* Search */}
-        <TextField
-          fullWidth
-          placeholder="Find patient"
-          sx={{ mb: 4 }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "#9CA3AF" }} />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton size="small">
-                    <FingerprintIcon sx={{ color: "#9CA3AF" }} />
-                  </IconButton>
-                  <IconButton size="small">
-                    <FilterListIcon sx={{ color: "#9CA3AF" }} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-
-        {/* Clinic & Type */}
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel>Clinic</InputLabel>
-              <Select defaultValue="">
-                <MenuItem value="neurology">Neurology</MenuItem>
-                <MenuItem value="ent">Ear, Nose & Throat</MenuItem>
-                <MenuItem value="emergency">Accident & Emergency</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel>Appointment type</InputLabel>
-              <Select defaultValue="">
-                <MenuItem value="consultation">Consultation</MenuItem>
-                <MenuItem value="followup">Follow-up</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-
-        {/* Title */}
-        <TextField
-          fullWidth
-          label="Title"
-          placeholder="e.g. Routine Checkup"
-          sx={{ mb: 4 }}
-        />
-
-        {/* Calendar Section */}
-        <Box sx={{ bgcolor: "#F8FAFC", borderRadius: 3, p: 3, mb: 4 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <CalendarTodayIcon sx={{ color: "#6366F1" }} />
-                <Typography fontWeight={600}>Time</Typography>
-              </Box>
-            </Grid>
-            <Grid
-              size={{ xs: 12, sm: 6 }}
-              sx={{ textAlign: { xs: "left", sm: "right" } }}
-            >
-              <Typography
-                fontWeight={700}
-                color="#4F46E5"
-                fontSize={18}
-                component="span"
-              >
-                25 Sep 2025
-              </Typography>
-              <Typography
-                fontWeight={700}
-                color="#4F46E5"
-                fontSize={18}
-                component="span"
-                ml={2}
-              >
-                09:49 AM
-              </Typography>
-            </Grid>
-          </Grid>
-
-          {/* Calendar Mock */}
-          <Box
-            sx={{
-              mt: 3,
-              bgcolor: "#6366F1",
-              borderRadius: 3,
-              p: 3,
-              color: "white",
-              textAlign: "center",
+        
+        <Box sx={{ position: "relative", mb: 3 }}>
+          <TextField
+            fullWidth
+            placeholder="Find patient"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              setShowDropdown(true);
             }}
-          >
-            <Box
+            onFocus={() => setShowDropdown(true)}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 3,
+                bgcolor: "#F9FAFB",
+              },
+            }}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: "#9CA3AF" }} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton size="small">
+                      <FingerprintIcon sx={{ color: "#9CA3AF" }} />
+                    </IconButton>
+                    <IconButton size="small">
+                      <FilterListIcon sx={{ color: "#9CA3AF" }} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+
+          
+          {showDropdown && filteredPatients.length > 0 && (
+            <Paper
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 2,
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                right: 0,
+                mt: 1,
+                borderRadius: 3,
+                boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+                zIndex: 1000,
+                maxHeight: 280,
+                overflowY: "auto",
               }}
             >
-              <FilterListIcon />
-              <Typography fontWeight={600}>September 2025</Typography>
-              <AccessTimeIcon sx={{ transform: "rotate(45deg)" }} />
-            </Box>
+              <List sx={{ p: 0 }}>
+                {filteredPatients.map((patient, index) => (
+                  <ListItem
+                    key={patient.id}
+                    onClick={() => handlePatientSelect(patient)}
+                    sx={{
+                      cursor: "pointer",
+                      py: 2,
+                      px: 3,
+                      borderBottom:
+                        index !== filteredPatients.length - 1
+                          ? "1px solid #E5E7EB"
+                          : "none",
+                      "&:hover": {
+                        bgcolor: "#F9FAFB",
+                      },
+                    }}
+                  >
+                    <ListItemText
+                      primary={
+                        <Typography fontWeight={600} color="#1F2937">
+                          {patient.name}
+                        </Typography>
+                      }
+                      secondary={
+                        <Typography color="#6B7280" fontSize={14}>
+                          {patient.id}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          )}
+        </Box>
 
-            {/* Weekdays */}
-            <Grid container>
-              {["S", "M", "T", "W", "T", "F", "S"].map((d) => (
-                <Grid size={12 / 7} key={d}>
-                  <Typography fontSize={12} fontWeight={500}>
-                    {d}
-                  </Typography>
-                </Grid>
-              ))}
-            </Grid>
+        
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 2.5,
+            borderBottom: "1px solid #E5E7EB",
+            mb: 0.5,
+          }}
+        >
+          <Typography color="#677597" fontWeight={500}>
+            Clinic
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography color="#051438" fontWeight={600}>
+              Clinic
+            </Typography>
+            <Typography color="#051438">›</Typography>
+          </Box>
+        </Box>
 
-            {/* Days */}
-            <Grid container spacing={0.5} sx={{ mt: 1 }}>
-              {[
-                30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-              ].map((day) => (
-                <Grid size={12 / 7} key={day}>
+        
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 2.5,
+            borderBottom: "1px solid #CDD8F3",
+            mb: 0.5,
+          }}
+        >
+          <Typography color="#677597" fontWeight={500}>
+            Title
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography color="#051438" fontWeight={600}>
+              Appointment type
+            </Typography>
+            <Typography color="#051438">›</Typography>
+          </Box>
+        </Box>
+
+        
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 2.5,
+            borderBottom: "1px solid #E5E7EB",
+            mb: 3,
+          }}
+        >
+          <Typography color="#677597" fontWeight={500}>
+            Time
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Typography color="#051438" fontWeight={600}>
+              25 Sep 2025
+            </Typography>
+            <Typography color="#051438" fontWeight={600}>
+              09:49 AM
+            </Typography>
+          </Box>
+        </Box>
+
+        
+        <Box
+          sx={{
+            bgcolor: "#6B7AA0",
+            borderRadius: 2,
+            p: 3,
+            mb: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 3,
+              color: "white",
+            }}
+          >
+            <IconButton size="small" sx={{ color: "white" }}>
+              <FilterListIcon fontSize="small" />
+            </IconButton>
+            <Typography fontWeight={600} color="white">
+              September 2025
+            </Typography>
+            <IconButton size="small" sx={{ color: "white" }}>
+              <AccessTimeIcon fontSize="small" />
+            </IconButton>
+          </Box>
+
+          
+          <Grid container sx={{ mb: 1 }}>
+            {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
+              <Grid size={12 / 7} key={i}>
+                <Typography
+                  fontSize={13}
+                  fontWeight={600}
+                  color="white"
+                  textAlign="center"
+                >
+                  {d}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+
+          
+          <Grid container spacing={0.3}>
+            {[
+              30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+              18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2,
+            ].map((day, idx) => {
+              const isPrevMonth = idx < 2;
+              const isNextMonth = idx >= 32;
+              const isSelected = day === 25 && !isPrevMonth && !isNextMonth;
+              return (
+                <Grid size={12 / 7} key={idx}>
                   <Box
                     sx={{
                       width: 36,
@@ -204,70 +308,92 @@ export const CreateAppointmentModal = ({
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      bgcolor: day === 25 ? "white" : "transparent",
-                      color: day === 25 ? "#6366F1" : "white",
-                      fontWeight: day === 25 ? 700 : 400,
+                      bgcolor: isSelected ? "white" : "transparent",
+                      color: isSelected
+                        ? "#6B7AA0"
+                        : isPrevMonth || isNextMonth
+                        ? "rgba(255,255,255,0.3)"
+                        : "white",
+                      fontWeight: isSelected ? 700 : 400,
+                      fontSize: 14,
                       mx: "auto",
+                      cursor: "pointer",
+                      "&:hover": {
+                        bgcolor: isSelected ? "white" : "rgba(255,255,255,0.1)",
+                      },
                     }}
                   >
                     {day}
                   </Box>
                 </Grid>
-              ))}
-            </Grid>
-          </Box>
+              );
+            })}
+          </Grid>
         </Box>
 
-        {/* Repeat */}
+        
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb: 5,
+            py: 2.5,
+            borderBottom: "1px solid #E5E7EB",
+            mb: 4,
           }}
         >
-          <Typography color="#6B7280">Repeat</Typography>
-          <FormControl sx={{ minWidth: 180 }}>
-            <Select defaultValue="none">
-              <MenuItem value="none">Does not repeat</MenuItem>
-              <MenuItem value="daily">Daily</MenuItem>
-              <MenuItem value="weekly">Weekly</MenuItem>
-            </Select>
-          </FormControl>
+          <Typography color="#677597" fontWeight={500}>
+            Repeat
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography color="#051438" fontWeight={600}>
+              Does not repeat
+            </Typography>
+            <Typography color="#051438">›</Typography>
+          </Box>
         </Box>
 
-        {/* Buttons */}
+        
         <Box
           sx={{
             display: "flex",
             justifyContent: "flex-end",
             gap: 2,
-            flexDirection: { xs: "column", sm: "row" },
+            mt: 1,
           }}
         >
           <Button
             variant="outlined"
-            sx={{
-              borderColor: "#4F46E5",
-              color: "#4F46E5",
-              borderRadius: 4,
-              px: 5,
-              py: 1.5,
-              width: { xs: "100%", sm: "auto" },
-            }}
             onClick={onClose}
+            sx={{
+              borderColor: "#6658F4",
+              color: "#6658f4",
+              borderRadius: 3,
+              px: 4,
+              py: 1.2,
+              textTransform: "none",
+              fontWeight: 600,
+              "&:hover": {
+                borderColor: "#6B7AA0",
+                bgcolor: "rgba(107, 122, 160, 0.04)",
+              },
+            }}
           >
             Save & Close
           </Button>
           <Button
             variant="contained"
             sx={{
-              bgcolor: "#4F46E5",
-              borderRadius: 4,
-              px: 6,
-              py: 1.5,
-              width: { xs: "100%", sm: "auto" },
+              bgcolor: "#051438",
+              color: "white",
+              borderRadius: 3,
+              px: 4,
+              py: 1.2,
+              textTransform: "none",
+              fontWeight: 600,
+              "&:hover": {
+                bgcolor: "#2A1F5E",
+              },
             }}
           >
             Create invoice

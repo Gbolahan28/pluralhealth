@@ -4,8 +4,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 type PaginationControlsProps = {
-  count?: number; // total pages
-  page?: number; // current page (1-indexed)
+  count?: number; 
+  page?: number; 
   onPageChange?: (event: React.ChangeEvent<unknown>, value: number) => void;
 };
 

@@ -26,7 +26,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         position: "relative",
       }}
     >
-      {/* Left border */}
+
       <div
         style={{
           position: "absolute",
@@ -39,7 +39,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         }}
       ></div>
 
-      {/* # + Expand */}
+
       <div
         style={{
           width: 60,
@@ -55,7 +55,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         </span>
       </div>
 
-      {/* Patient Info */}
+
       <div
         style={{ width: 310, display: "flex", alignItems: "center", gap: 20 }}
       >
@@ -91,7 +91,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         </div>
       </div>
 
-      {/* Clinic */}
+
       <div
         style={{
           width: 240,
@@ -136,7 +136,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         )}
       </div>
 
-      {/* Wallet */}
+
       <div
         style={{
           width: 130,
@@ -150,13 +150,13 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         {apt.wallet}
       </div>
 
-      {/* Time */}
+  
       <div style={{ width: 160 }}>
         <div
           style={{
             fontSize: 14,
             fontWeight: 600,
-            color: "#FB923C", // Figma orange
+            color: "#FB923C", 
           }}
         >
           {apt.time}
@@ -190,7 +190,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         )}
       </div>
 
-      {/* Status */}
+
       <div
         style={{
           width: 160,
@@ -232,7 +232,7 @@ export const PatientRowFlex = ({ apt, index }: any) => {
         </div>
       </div>
 
-      {/* Menu */}
+
       <div
         style={{
           width: 60,
